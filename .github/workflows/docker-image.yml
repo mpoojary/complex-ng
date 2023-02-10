@@ -20,7 +20,18 @@ jobs:
       run: docker run -e CI=true complex/react-test npm test -- --coverage
     - name: Building Production images
       run: |
-        docker build -t complex/multi-client ./client
-        docker build -t complex/multi-nginx ./nginx
-        docker build -t complex/multi-server ./server
-        docker build -t complex/multi-worker ./worker
+        docker build -t ${{secrets.DOCKER_USER}}/multi-client ./client
+        docker build -t ${{secrets.DOCKER_USER}}/multi-nginx ./nginx
+        docker build -t ${{secrets.DOCKER_USER}}/multi-server ./server
+        docker build -t ${{secrets.DOCKER_USER}}/multi-worker ./worker
+    - name: Docker hub login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: Docker push
+      run: |
+        docker push ${{secrets.DOCKER_USER}}/multi-client
+        docker push ${{secrets.DOCKER_USER}}/multi-nginx
+        docker push ${{secrets.DOCKER_USER}}/multi-server
+        docker push ${{secrets.DOCKER_USER}}/multi-worker
