@@ -51,6 +51,8 @@ jobs:
         string: "${{ steps.current-time.outputs.time }}"
         replace-with: '-'
         flags: 'g'
+    - name: Generate deployment package
+      run: zip -r deploy.zip * .[^.]* -x "**node_modules**"
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v16
       with:
@@ -60,3 +62,4 @@ jobs:
         environment_name: Multidocker-env
         version_label: "multi-docker-${{ steps.format-time.outputs.replaced }}"
         region: ap-northeast-1
+        deployment_package: deploy.zip
