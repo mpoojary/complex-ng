@@ -19,7 +19,8 @@ jobs:
     - name: Execure test cases on test image
       run: docker run -e CI=true complex/react-test npm test -- --coverage
     - name: Building Production images
-      run: docker build -t complex/multi-client ./client
-      run: docker build -t complex/multi-nginx ./nginx
-      run: docker build -t complex/multi-server ./server
-      run: docker build -t complex/multi-worker ./worker
+      run: |
+        docker build -t complex/multi-client ./client
+        docker build -t complex/multi-nginx ./nginx
+        docker build -t complex/multi-server ./server
+        docker build -t complex/multi-worker ./worker
