@@ -35,3 +35,24 @@ jobs:
         docker push ${{secrets.DOCKER_USER}}/multi-nginx
         docker push ${{secrets.DOCKER_USER}}/multi-server
         docker push ${{secrets.DOCKER_USER}}/multi-worker
+  deploy:
+    - name: Get Timestamp
+      uses: gerred/actions/current-time@master
+      id: current-time
+    - name: Run String Replace
+      uses: frabert/replace-string-action@master
+      id: format-time
+      with:
+        pattern: '[:\.]+'
+        string: "${{ steps.current-time.outputs.time }}"
+        replace-with: '-'
+        flags: 'g'
+    - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v16
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ env.AWS_APP_NAME }}
+          environment_name: ${{ env.AWS_ENV }}
+          version_label: "docker-app-${{ steps.format-time.outputs.replaced }}"
+          region: ${{ env.AWS_REGION }}
