@@ -59,4 +59,4 @@ jobs:
         application_name: ${{ env.AWS_APP_NAME }}
         environment_name: ${{ env.AWS_ENV }}
         version_label: "multi-docker-${{ steps.format-time.outputs.replaced }}"
-        region: ${{ env.AWS_REGION }}
+        region: ap-northeast-1
