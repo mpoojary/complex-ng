@@ -36,6 +36,10 @@ jobs:
         docker push ${{secrets.DOCKER_USER}}/multi-server
         docker push ${{secrets.DOCKER_USER}}/multi-worker
   deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
     - name: Get Timestamp
       uses: gerred/actions/current-time@master
       id: current-time
