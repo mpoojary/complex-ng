@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker test image
-      run: docker build -t complex/react-test -f ./client/Dockerfile.dev .
+      run: docker build -t complex/react-test -f ./client/Dockerfile.dev ./client
     - name: Execure test cases on test image
       run: docker run -e CI=true complex/react-test npm test -- --coverage
